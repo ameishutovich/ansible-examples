@@ -1,0 +1,15 @@
+---
+- name: examples with blocks
+  hosts: testServer
+  remote_user: vagrant
+  become: yes
+
+  tasks:
+   - block:
+      - name: copy file
+        copy: src=test1.txt dest=/tmp/loops
+     rescue:
+      - debug: msg="Error happened"
+     always:
+      - debug: msg="This message will always display"
+         

@@ -1,0 +1,10 @@
+[mysqld_safe]
+pid-file        = /var/run/mysqld/mysqld.pid
+log_error = /var/log/mysqld.log
+
+[mysqld]
+user            = mysql
+socket          = /var/run/mysqld/mysqld.sock
+port            = {{ mysql_port }}
+datadir         = /var/lib/mysql
+symbolic-links  = 0

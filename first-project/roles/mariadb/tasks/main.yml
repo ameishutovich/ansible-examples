@@ -1,0 +1,22 @@
+---
+  - name: install mariadb for Debian/Ubuntu
+    apt: name={{item}} state=installed
+    with_items:
+    - mariadb-server
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: install mariadb for RedHat/CentOS
+    yum: name={{item}} state=installed
+    with_items:
+    - mariadb-server
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: create mysql config file
+    template: src=my.cnf.j2 dest=/etc/my.cnf
+    notify: restart mariadb
+ 
+  - name: create mariadb log file
+    file: path={{log_path}}/mysqld.log state=touch owner=mysql group=mysql mode=0775
+
+  - name: start mariadb
+    service: name=mysql state=started enabled=yes

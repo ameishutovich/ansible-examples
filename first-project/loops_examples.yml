@@ -1,0 +1,22 @@
+---
+- name: examples of loops
+  hosts: testServer
+  remote_user: vagrant
+  become: yes
+
+  tasks:
+  - name: looping environment facts
+    debug: msg={{item.key}}={{item.value}}
+    with_dict: ansible_env
+
+  - name: looping over files
+    copy: src={{item}} dest="/tmp/loops"
+    with_fileglob: "/tmp/*.conf"
+
+  - name: do until loop
+    shell: echo hello
+    register: output
+    retries: 5
+    delay: 5
+    until: output.stdout.find('hello') != -1
+
